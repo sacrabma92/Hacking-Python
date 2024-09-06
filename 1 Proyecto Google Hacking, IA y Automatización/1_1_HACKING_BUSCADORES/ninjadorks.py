@@ -1,14 +1,26 @@
-from dotenv import load_dotenv  # Libreria que ayuda a crear las variables de entorno
+from dotenv import load_dotenv, set_key  # Libreria que ayuda a crear las variables de entorno
 import os   # Libreria que nos ayuda a interactuar con el OS
 from googlesearch import GoogleSearch
 import argparse    # Libreria que nos ayudara a pasar argumentos por linea de comandos
+import sys
+
+def env_config():
+    """Configurar el archivo .env con los valores proporcionados"""
+    api_key = input("Introduce tu API KEY de Google: ")
+    engine_id = input("Introduce el ID del buscador personalziado de Google: ")
+    set_key(".env", "API_KEY_GOOGLE", api_key)
+    set_key(".env", "SEARCH_ENGINE_ID", engine_id)
+
 
 def main(query, configure_env, start_page, pages, lang):
     # Comprobamos si existe el ficher .env
     env_exists = os.path.exists(".env")
 
+    # En caso que el archivo .env no existra realizar lo siguiente
     if not env_exists or configure_env:
-        pass
+        env_config()
+        print("Archivo .env configurado satisfactoriamente.")
+        sys.exit(1)
 
     #Cargamos las variables en el entorno
     load_dotenv()
@@ -19,12 +31,18 @@ def main(query, configure_env, start_page, pages, lang):
     # Leer el identificador del buscador
     SEARCH_ENGINE_ID = os.getenv("SEARCH_ENGINE_ID")
 
+    if not query:
+        print("Indica una consulta con el comando -q. Utilzia el comando -h para mostrar la ayuda.")
+        sys.exit(1)
 
     query = '"pass" "usuario" filetype:sql' #cadena a buscar
 
     # Instanciamos el objeto
     gsearch = GoogleSearch(API_KEY_GOOGLE, SEARCH_ENGINE_ID)
-    resultados = gsearch.search(query, pages=2)
+    resultados = gsearch.search(query, 
+                                start_page=start_page,
+                                pages=pages,
+                                lang=lang)
     print(resultados)
 
 if __name__ == "__main__":
