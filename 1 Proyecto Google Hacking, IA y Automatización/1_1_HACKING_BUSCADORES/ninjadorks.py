@@ -35,8 +35,6 @@ def main(query, configure_env, start_page, pages, lang):
         print("Indica una consulta con el comando -q. Utilzia el comando -h para mostrar la ayuda.")
         sys.exit(1)
 
-    query = '"pass" "usuario" filetype:sql' #cadena a buscar
-
     # Instanciamos el objeto
     gsearch = GoogleSearch(API_KEY_GOOGLE, SEARCH_ENGINE_ID)
     resultados = gsearch.search(query, 
@@ -45,13 +43,14 @@ def main(query, configure_env, start_page, pages, lang):
                                 lang=lang)
     print(resultados)
 
+# Ejecutamos el programa
 if __name__ == "__main__":
     # Configuración de los argumentos del programa
     parser = argparse.ArgumentParser(description="Esta herramienta permite realziar Hacking con buscadores de manera automatica")
     parser.add_argument("-q","--query", type=str, 
                         help="Especifica el dork que desea buscar.\nEjemplo: -q \"pass\" \"usuario\" filetype:sql")
     parser.add_argument("-c", "--configure", action="store_true",
-                        help="Inicial el proceso de configuracion del archivo .env. \nUtiliza esta opcion sin otros argumentos para configurar las claves.")
+                        help="Inicia el proceso de configuracion del archivo .env. \nUtiliza esta opcion sin otros argumentos para configurar las claves.")
     parser.add_argument("--start-page", type=int, default=1,
                         help="Define la pagina de inicio del buscador para obtener los resultados.")
     parser.add_argument("--pages", type=int, default=1,
