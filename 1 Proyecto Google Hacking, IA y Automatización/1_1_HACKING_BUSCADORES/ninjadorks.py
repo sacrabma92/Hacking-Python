@@ -1,4 +1,5 @@
 from dotenv import load_dotenv, set_key  # Libreria que ayuda a crear las variables de entorno
+from result_parser import ResultParser
 import os   # Libreria que nos ayuda a interactuar con el OS
 from googlesearch import GoogleSearch
 import argparse    # Libreria que nos ayudara a pasar argumentos por linea de comandos
@@ -12,7 +13,7 @@ def env_config():
     set_key(".env", "SEARCH_ENGINE_ID", engine_id)
 
 
-def main(query, configure_env, start_page, pages, lang):
+def main(query, configure_env, start_page, pages, lang, output_json, output_html):
     # Comprobamos si existe el ficher .env
     env_exists = os.path.exists(".env")
 
@@ -41,11 +42,21 @@ def main(query, configure_env, start_page, pages, lang):
                                 start_page=start_page,
                                 pages=pages,
                                 lang=lang)
-    print(resultados)
+
+    rparser = ResultParser(resultados)
+
+    # Mostrar los resultados en linea de consola de comandos
+    rparser.mostrar_pantalla()
+
+    if output_html:
+        rparser.exportar_html(output_html)
+    
+    if output_json:
+        rparser.exportar_json(output_json)
 
 # Ejecutamos el programa
 if __name__ == "__main__":
-    # Configuración de los argumentos del programa
+    # Configuración de los argumentos del programa  
     parser = argparse.ArgumentParser(description="Esta herramienta permite realziar Hacking con buscadores de manera automatica")
     parser.add_argument("-q","--query", type=str, 
                         help="Especifica el dork que desea buscar.\nEjemplo: -q \"pass\" \"usuario\" filetype:sql")
@@ -57,6 +68,10 @@ if __name__ == "__main__":
                         help="Numero de paginas de resultados de busqueda.")
     parser.add_argument("--lang", type=str, default="lang_es",
                         help="Codigo de idioma para los resultados de busqueda. Por defecto es 'lang_es' español.")
+    parser.add_argument("--json", type=str,
+                        help="Exporta los resultados en formato JSON en el fichero especificado.")
+    parser.add_argument("--html", type=str,
+                        help="Exporta los resultados a formato HTML en el fichero especificado.")
     # Almacenar los argumentos que le enviemos
     args = parser.parse_args()
 
@@ -64,4 +79,6 @@ if __name__ == "__main__":
          configure_env=args.configure,
          pages=args.pages,
          start_page=args.start_page,
-         lang=args.lang)
+         lang=args.lang,
+         output_html=args.html,
+         output_json=args.json)

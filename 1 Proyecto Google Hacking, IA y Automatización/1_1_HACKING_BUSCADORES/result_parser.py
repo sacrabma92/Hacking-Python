@@ -1,7 +1,9 @@
 import json
+from rich.console import Console
+from rich.table import Table
 
 
-class ResultParser():
+class ResultParser:
     """Forma en la cual se va a mostrar los datos ya sea en HTML o JSON"""
     def __init__(self, resultados):
         self.resultados = resultados
@@ -32,3 +34,16 @@ class ResultParser():
             json.dump(self.resultados, f, ensure_ascii=False, indent=4)
         print(f"Resultados exportados a JSON. Fichero creado: {archivo_salida}") # Mostramos mensaje cuando finalice
 
+    def mostrar_pantalla(self):
+        console = Console()
+        table = Table(show_header=True, header_style="bold magenta")
+        table.add_column("#", style="dim")
+        table.add_column("Titulo", width=50)
+        table.add_column("Descripción")
+        table.add_column("Enlace")
+
+        for indice, resultado in enumerate(self.resultados, start=1):
+            table.add_row(str(indice), resultado["title"], resultado["description"], resultado["link"])
+            table.add_row("", "", "", "")
+            
+        console.print(table)
