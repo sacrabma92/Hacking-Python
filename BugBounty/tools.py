@@ -11,6 +11,4 @@ tools = {
     "katana": {"type": "go", "command": "go install github.com/projectdiscovery/katana/cmd/katana@latest"},
     "hakrawler": {"type": "go", "command": "go install github.com/hakluke/hakrawler@latest"},
     "waybackurls": {"type": "go", "command": "go install github.com/tomnomnom/waybackurls@latest"},
-    "nuclei": {"type": "go", "command": "go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"},
-    "gf": {"type": "go", "command": "go install github.com/tomnomnom/gf@latest"},
 }
