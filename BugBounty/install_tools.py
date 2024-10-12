@@ -94,6 +94,22 @@ def install_gf():
     else:
         print(f"{Colors.RED}Error al instalar GF.{Colors.RESET}")
 
+# Función para instalar OpenRedireX
+def install_openredirex():
+    if not os.path.exists("openredirex"):
+        print("Instalando OpenRedireX...")
+        result = subprocess.run("git clone https://github.com/devanshbatham/openredirex", shell=True)
+        
+        if result.returncode == 0:
+            print("OpenRedireX clonado con éxito.")
+            subprocess.run("cd openredirex && sudo chmod +x setup.sh && ./setup.sh", shell=True)
+            subprocess.run("cp ~/Downloads/openredirex/setup.sh /usr/local/bin/", shell=True)
+            print(f"{Colors.GREEN}OpenRedireX instalado con éxito.{Colors.RESET}")
+        else:
+            print(f"{Colors.RED}Error al clonar OpenRedireX.{Colors.RESET}")
+    else:
+        print(f"{Colors.GREEN}OpenRedireX ya está instalado.{Colors.RESET}")
+
 # Función principal que instala todas las herramientas
 def install_tools(tools):
     for tool_name, tool_info in tools.items():
@@ -104,5 +120,7 @@ def install_tools(tools):
     install_corsy()
     # Instalar GF
     install_gf()
+    # Instalar OpenRedireX
+    install_openredirex()
     # Copiar los binarios de Go una vez instaladas las herramientas
     copy_binaries()
