@@ -3,7 +3,10 @@ from tools.sublister import ejecutar_sublister
 from tools.subfinder import ejecutar_subfinder
 from utils.file_utils import leer_dominios, guardar_subdominios
 
-def buscar_subdominios(entrada, archivo_salida):
+# Nombre del archivo de salida estático
+NOMBRE_ARCHIVO_SALIDA = "subdominios_encontrados.txt"
+
+def buscar_subdominios(entrada):
     # Verificar si la entrada es un archivo o un dominio individual
     if entrada.endswith('.txt'):
         # Leer dominios desde el archivo
@@ -27,7 +30,7 @@ def buscar_subdominios(entrada, archivo_salida):
         subdominios_totales.update(subdominios_subfinder)
 
     # Guardar todos los subdominios válidos en un solo archivo de salida
-    guardar_subdominios(subdominios_totales, archivo_salida)
+    guardar_subdominios(subdominios_totales, NOMBRE_ARCHIVO_SALIDA)
 
 def main():
     parser = argparse.ArgumentParser(description="Buscar subdominios utilizando múltiples herramientas.")
@@ -36,15 +39,13 @@ def main():
     group.add_argument("--dominio", type=str, help="Dominio único a buscar (ejemplo.com)")
     group.add_argument("--archivo", type=str, help="Archivo .txt que contiene la lista de dominios")
 
-    parser.add_argument("--salida", type=str, required=True, help="El archivo de salida para almacenar los subdominios encontrados")
-    
     args = parser.parse_args()
 
     # Elegir la entrada correcta
     if args.dominio:
-        buscar_subdominios(args.dominio, args.salida)
+        buscar_subdominios(args.dominio)
     else:
-        buscar_subdominios(args.archivo, args.salida)
+        buscar_subdominios(args.archivo)
 
 # Ejecutar el programa principal
 if __name__ == "__main__":
