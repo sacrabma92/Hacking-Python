@@ -35,7 +35,7 @@ def copy_binaries():
 
     if os.path.exists(go_bin_path):
         print("Copiando los binarios de Go a /usr/local/bin...")
-        result = subprocess.run(f"sudo cp {go_bin_path}/* /usr/local/bin", shell=True)
+        result = subprocess.run(f"sudo cp  ~/go/bin/* /usr/local/bin", shell=True)
         if result.returncode == 0:
             print("Binarios de Go copiados con éxito.")
         else:
@@ -110,6 +110,18 @@ def install_openredirex():
     else:
         print(f"{Colors.GREEN}OpenRedireX ya está instalado.{Colors.RESET}")
 
+# 
+def install_ctr():
+    if not os.path.exists("ctr.sh"):
+        print("Instalando CTR-Scanner...")
+        result = subprocess.run("git clone https://github.com/az7rb/crt.sh.git ", shell=True)
+
+        if result.returncode == 0:
+            print("CTR-Scanner clonado con éxito.")
+            subprocess.run("cd crt.sh && sudo chmod +x crt.sh && cd ..", shell=True)
+            subprocess.run("sudo mv crt.sh/* /usr/local/bin", shell=True)
+            print(f"{Colors.GREEN}CTR instalado con éxito.{Colors.RESET}")
+
 # Función principal que instala todas las herramientas
 def install_tools(tools):
     for tool_name, tool_info in tools.items():
@@ -122,5 +134,7 @@ def install_tools(tools):
     install_gf()
     # Instalar OpenRedireX
     install_openredirex()
+    # Instalar CTR
+    install_ctr()
     # Copiar los binarios de Go una vez instaladas las herramientas
     copy_binaries()

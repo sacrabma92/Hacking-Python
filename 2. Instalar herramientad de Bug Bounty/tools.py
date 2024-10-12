@@ -12,4 +12,5 @@ tools = {
     "katana": {"type": "go", "command": "go install github.com/projectdiscovery/katana/cmd/katana@latest"},
     "hakrawler": {"type": "go", "command": "go install github.com/hakluke/hakrawler@latest"},
     "waybackurls": {"type": "go", "command": "go install github.com/tomnomnom/waybackurls@latest"},
+    "httpx": {"type": "go", "command": "go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest"},
 }
