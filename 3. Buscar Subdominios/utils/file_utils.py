@@ -1,4 +1,3 @@
-#
 def leer_dominios(archivo):
     """Leer dominios desde un archivo .txt"""
     try:
@@ -6,12 +5,13 @@ def leer_dominios(archivo):
             dominios = f.read().splitlines()
         return dominios
     except FileNotFoundError:
-        print(f"El archivo {archivo} no fue contrado")
+        print(f"El archivo {archivo} no fue encontrado.")
         return []
-    
-def guardar_subdominios(dominio, subdominios):
-    """Guardar subdominios en un archivo .txt"""
-    with open(f"{dominio}.txt", 'w') as f:
-        for subdominio in subdominios:
+
+def guardar_subdominios(subdominios, archivo_salida):
+    """Guardar los subdominios encontrados en un archivo."""
+    with open(archivo_salida, 'w') as f:
+        for subdominio in sorted(subdominios):
             f.write(subdominio + '\n')
-    print(f"Subdominios guardados en {dominio}.txt")
+    
+    print(f"Subdominios guardados en {archivo_salida}")
