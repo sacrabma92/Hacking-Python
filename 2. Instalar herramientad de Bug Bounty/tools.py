@@ -5,6 +5,7 @@ tools = {
     "amass": {"type": "apt", "command":"sudo apt install amass"},
     "naabu": {"type": "apt", "command":"sudo apt install naabu"},
     "dirsearch": {"type": "apt", "command":"sudo apt install dirsearch"},
+    "sublist3r": {"type": "apt", "command":"sudo apt install sublist3r"},
     "anew": {"type": "go", "command": "go install -v github.com/tomnomnom/anew@latest"},
     "subfinder": {"type": "go", "command": "go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"},
     "httpx": {"type": "go", "command": "go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest"},
