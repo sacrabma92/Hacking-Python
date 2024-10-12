@@ -3,9 +3,11 @@ from utils.filter_utils import filtrar_subdominios
 
 def ejecutar_subfinder(dominio):
     try:
+        # Ejecutamos subfinder y guardamos el resultado en un archivo
         print(f"Ejecutando subfinder para {dominio}")
         resultado = subprocess.run(['subfinder', '-d', dominio], capture_output=True, text=True)
 
+        # Si el comando no se ejecutó correctamente, mostramos un mensaje de error
         if resultado.returncode != 0:
             print(f"Error al ejecutar subfinder: {resultado.stderr}")
             return []
