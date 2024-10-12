@@ -1,6 +1,7 @@
 import argparse
 from tools.sublister import ejecutar_sublister
 from tools.subfinder import ejecutar_subfinder
+from tools.amass import ejecutar_amass
 from utils.file_utils import leer_dominios, guardar_subdominios
 
 # Nombre del archivo de salida estático
@@ -24,10 +25,12 @@ def buscar_subdominios(entrada):
         # Ejecutar herramientas y filtrar subdominios
         subdominios_sublister = ejecutar_sublister(dominio)
         subdominios_subfinder = ejecutar_subfinder(dominio)
+        subdominios_amass = ejecutar_amass(dominio)
 
         # Combinar subdominios encontrados y eliminar duplicados
         subdominios_totales.update(subdominios_sublister)
         subdominios_totales.update(subdominios_subfinder)
+        subdominios_totales.update(subdominios_amass)
 
     # Guardar todos los subdominios válidos en un solo archivo de salida
     guardar_subdominios(subdominios_totales, NOMBRE_ARCHIVO_SALIDA)
