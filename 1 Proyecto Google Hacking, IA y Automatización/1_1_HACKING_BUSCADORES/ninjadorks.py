@@ -1,5 +1,6 @@
 from dotenv import load_dotenv, set_key  # Libreria que ayuda a crear las variables de entorno
 from result_parser import ResultParser
+from file_downloader import FileDownloader
 import os   # Libreria que nos ayuda a interactuar con el OS
 from googlesearch import GoogleSearch
 import argparse    # Libreria que nos ayudara a pasar argumentos por linea de comandos
@@ -13,7 +14,7 @@ def env_config():
     set_key(".env", "SEARCH_ENGINE_ID", engine_id)
 
 
-def main(query, configure_env, start_page, pages, lang, output_json, output_html):
+def main(query, configure_env, start_page, pages, lang, output_json, output_html, downloads):
     # Comprobamos si existe el ficher .env
     env_exists = os.path.exists(".env")
 
@@ -54,6 +55,14 @@ def main(query, configure_env, start_page, pages, lang, output_json, output_html
     if output_json:
         rparser.exportar_json(output_json)
 
+    if download:
+        #Separar las extension de los archivos en una lista
+        file_types = download.split(",")
+        # Nos quedamos unicamente con los URLs de los resultados obtenidos
+        urls = [resultado['link'] for resultado in resultados]
+        fdownloader = FileDownloader("Descargas")
+        fdownloader.filtrar_descargar_archivos(urls, file_types)
+
 # Ejecutamos el programa
 if __name__ == "__main__":
     # Configuración de los argumentos del programa  
@@ -72,6 +81,8 @@ if __name__ == "__main__":
                         help="Exporta los resultados en formato JSON en el fichero especificado.")
     parser.add_argument("--html", type=str,
                         help="Exporta los resultados a formato HTML en el fichero especificado.")
+    parser.add_argument("--download", type=str, default="all",
+                        help="Especifica las extensiones de los archivos que quieres descargar entre coma. Ej: --download 'pdf,doc,sql'")
     # Almacenar los argumentos que le enviemos
     args = parser.parse_args()
 
@@ -81,4 +92,6 @@ if __name__ == "__main__":
          start_page=args.start_page,
          lang=args.lang,
          output_html=args.html,
-         output_json=args.json)
+         output_json=args.json,
+         downloads=args.download)
+    
