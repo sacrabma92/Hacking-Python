@@ -1,6 +1,7 @@
 import argparse
 from utils.file_utils import leer_dominios, guardar_resultado
 from tools.katana import ejecutar_katana
+from tools.waybackurls import ejecutar_waybackurls
 
 # Función para verificar si la entrada es un archivo o un dominio único
 def verificar_entrada(entrada):
@@ -16,8 +17,14 @@ def verificar_entrada(entrada):
     # Procesar cada dominio y obtener las URLs
     for dominio in dominios:
         print(f"Procesando {dominio}...")
-        urls_crawler = ejecutar_katana(dominio)
-        urls_totales.update(urls_crawler)
+
+        # Ejecutar Katana y agregar URLs
+        urls_katana = ejecutar_katana(dominio)
+        urls_totales.update(urls_katana)
+
+        # Ejecutar Waybackurls y agregar URLs
+        urls_wayback = ejecutar_waybackurls(dominio)
+        urls_totales.update(urls_wayback)
 
     # Guardar los resultados si se encontraron URLs
     if urls_totales:
