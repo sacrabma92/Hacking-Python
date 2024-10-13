@@ -1,17 +1,36 @@
 import subprocess
 
 def ejecutar_katana(domain):
+    """Ejecuta Katana en un dominio y captura la salida"""
     try:
-        # Ejecutamos katana y guardamos el resultado en un archivo
         print(f"Ejecutando katana para {domain}")
-        # Ejecutamos katana y guardamos el resultado en un archivo
-        resultado = subprocess.run(["katana", "-u", domain, "-d 5 -ps -pss waybackarchive,commoncrawl,alienvalut -kf -jc -fx -ef woff,css,png,svg,jpg,woff2,jpeg,gif,svg"], capture_output=True, text=True)
 
-        # Si el comando no se ejecutó correctamente, mostrar mensaje de error
+        # Ejecutar el comando de Katana y capturar la salida
+        resultado = subprocess.run(
+                ["katana", 
+                "-u", domain,  # Usar el dominio o archivo que se le pase
+                "-d", "5",
+                "-pss", "waybackarchive,commoncrawl,alienvalut",
+                "-jc",
+                "-ef", "woff,css,png,svg,jpg,woff2,jpeg,gif,svg"], 
+            capture_output=True, 
+            text=True, 
+            check=True  # Si el comando falla, lanza una excepción
+        )
+
+        # Verificar si Katana no devolvió un error
         if resultado.returncode != 0:
-            print(f"Error al ejecutar katana: {resultado.stderr}")
-            # Si el comando se ejecutó correctamente, retornar las urls encontradas
-        return resultado.stdout
+            print(f"Error al ejecutar Katana: {resultado.stderr}")
+            return []
+
+        # Separar las líneas de la salida y devolverlas
+        urls = resultado.stdout.splitlines()
+        return [url for url in urls if url.strip()]
+
     except subprocess.CalledProcessError as e:
-        print(f"Error al ejecutar katana: {e}")
-        return ""
+        print(f"Error al ejecutar Katana: {e.stderr}")
+        return []
+    
+    except FileNotFoundError:
+        print("Katana no está instalado o no se encontró en el PATH.")
+        return []
