@@ -55,9 +55,9 @@ def main(query, configure_env, start_page, pages, lang, output_json, output_html
     if output_json:
         rparser.exportar_json(output_json)
 
-    if download:
+    if downloads:
         #Separar las extension de los archivos en una lista
-        file_types = download.split(",")
+        file_types = downloads.split(",")
         # Nos quedamos unicamente con los URLs de los resultados obtenidos
         urls = [resultado['link'] for resultado in resultados]
         fdownloader = FileDownloader("Descargas")
